@@ -24,6 +24,11 @@ public class JavalinApp {
             post(composerController::handleAddNewComposer);
             path(":id", this::addEndpoints);
         });
+        before("compositions", ctx -> {
+            if (ctx.method() != "GET") {
+                userController.adminAuth(ctx);
+            }
+        });
         path("compositions", () -> {
             get(compositionController::handleGetAllCompositions);
             post(compositionController::handleAddNewComposition);
