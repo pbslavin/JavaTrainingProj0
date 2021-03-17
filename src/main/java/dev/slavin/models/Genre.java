@@ -1,0 +1,20 @@
+package dev.slavin.models;
+
+public enum Genre {
+    SYMPHONY,
+    ORCHESTRAL_SUITE,
+    ORCHESTRAL_WORK,
+    LARGE_ENSEMBLE,
+    BALLET,
+    CHORAL_WORK,
+    EARLY_POLYPHONY,
+    OPERA,
+    SONG_CYCLE,
+    ART_SONG,
+    EARLY_MONOPHONIC_FORM,
+    STRING_QUARTET,
+    MIXED_CHAMBER_ENSEMBLE,
+    SOLO_SONATA,
+    SOLO_SUITE,
+    SOLO_PIECE
+}

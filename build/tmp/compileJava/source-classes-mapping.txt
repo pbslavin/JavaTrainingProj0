@@ -1,0 +1,40 @@
+dev/slavin/services/ComposerService.java
+ dev.slavin.services.ComposerService
+dev/slavin/data/UserDAOImpl.java
+ dev.slavin.data.UserDAOImpl
+dev/slavin/models/User.java
+ dev.slavin.models.User
+dev/slavin/util/ConnectionUtility.java
+ dev.slavin.util.ConnectionUtility
+dev/slavin/data/CompositionDAO.java
+ dev.slavin.data.CompositionDAO
+dev/slavin/services/UserService.java
+ dev.slavin.services.UserService
+dev/slavin/controllers/UserController.java
+ dev.slavin.controllers.UserController
+dev/slavin/services/CompositionService.java
+ dev.slavin.services.CompositionService
+dev/slavin/data/CompositionDAOImpl.java
+ dev.slavin.data.CompositionDAOImpl
+dev/slavin/models/Composition.java
+ dev.slavin.models.Composition
+dev/slavin/controllers/ComposerController.java
+ dev.slavin.controllers.ComposerController
+dev/slavin/models/Composer.java
+ dev.slavin.models.Composer
+dev/slavin/controllers/CompositionController.java
+ dev.slavin.controllers.CompositionController
+dev/slavin/data/UserDAO.java
+ dev.slavin.data.UserDAO
+dev/slavin/data/ComposerDAO.java
+ dev.slavin.data.ComposerDAO
+dev/slavin/models/Genre.java
+ dev.slavin.models.Genre
+dev/slavin/ConnectionTest.java
+ dev.slavin.ConnectionTest
+dev/slavin/data/ComposerDAOImpl.java
+ dev.slavin.data.ComposerDAOImpl
+dev/slavin/Driver.java
+ dev.slavin.Driver
+dev/slavin/JavalinApp.java
+ dev.slavin.JavalinApp
