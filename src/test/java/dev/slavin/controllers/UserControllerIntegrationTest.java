@@ -31,7 +31,7 @@ public class UserControllerIntegrationTest {
         HttpResponse<String> response = Unirest.get("http://localhost:7000/users").asString();
         assertAll(
                 () -> assertEquals( 401, response.getStatus()),
-                () -> assertEquals( "Unauthorized", response.getBody()));
+                () -> assertEquals( "You are unauthorized.", response.getBody()));
     }
 
     @Test

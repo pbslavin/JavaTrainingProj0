@@ -10,8 +10,8 @@ dev/slavin/data/CompositionDAO.java
  dev.slavin.data.CompositionDAO
 dev/slavin/services/UserService.java
  dev.slavin.services.UserService
-dev/slavin/controllers/UserController.java
- dev.slavin.controllers.UserController
+dev/slavin/data/ComposerDAOImpl.java
+ dev.slavin.data.ComposerDAOImpl
 dev/slavin/services/CompositionService.java
  dev.slavin.services.CompositionService
 dev/slavin/data/CompositionDAOImpl.java
@@ -32,8 +32,8 @@ dev/slavin/models/Genre.java
  dev.slavin.models.Genre
 dev/slavin/ConnectionTest.java
  dev.slavin.ConnectionTest
-dev/slavin/data/ComposerDAOImpl.java
- dev.slavin.data.ComposerDAOImpl
+dev/slavin/controllers/UserController.java
+ dev.slavin.controllers.UserController
 dev/slavin/Driver.java
  dev.slavin.Driver
 dev/slavin/JavalinApp.java

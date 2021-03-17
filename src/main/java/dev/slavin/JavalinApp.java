@@ -14,7 +14,7 @@ public class JavalinApp {
     UserController userController = new UserController();
 
     Javalin app = Javalin.create().routes(() -> {
-        before("composers", ctx -> {
+        before(ctx -> {
             if (ctx.method() != "GET") {
                 userController.adminAuth(ctx);
             }

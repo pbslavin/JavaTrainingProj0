@@ -37,7 +37,7 @@ public class ComposerControllerIntegrationTest {
         HttpResponse<String> response = Unirest.post("http://localhost:7000/composers")
                 .asString();
         assertAll(
-                () -> assertEquals( 403, response.getStatus()),
+                () -> assertEquals( 401, response.getStatus()),
                 () -> assertEquals( "You are unauthorized.", response.getBody()));
     }
 
@@ -57,7 +57,7 @@ public class ComposerControllerIntegrationTest {
         HttpResponse<String> response = Unirest.put("http://localhost:7000/composers/hello")
                 .asString();
         assertAll(
-                () -> assertEquals( 403, response.getStatus()),
+                () -> assertEquals( 401, response.getStatus()),
                 () -> assertEquals( "You are unauthorized.", response.getBody()));
     }
 
@@ -77,7 +77,7 @@ public class ComposerControllerIntegrationTest {
         HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/hello")
                 .asString();
         assertAll(
-                () -> assertEquals( 403, response.getStatus()),
+                () -> assertEquals( 401, response.getStatus()),
                 () -> assertEquals( "You are unauthorized.", response.getBody()));
     }
 

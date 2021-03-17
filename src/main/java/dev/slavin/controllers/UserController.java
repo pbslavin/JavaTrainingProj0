@@ -53,7 +53,7 @@ public class UserController {
         String authHeader = ctx.header("Authorization");
 
         if (authHeader == null || !authHeader.equals("admin-auth-token")) {
-            throw new UnauthorizedResponse();
+            throw new UnauthorizedResponse("You are unauthorized.");
         }
     }
 
