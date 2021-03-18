@@ -1,7 +1,6 @@
 package dev.slavin.models;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 public class Composition implements Serializable {
@@ -11,7 +10,7 @@ public class Composition implements Serializable {
     private int composerId;
     private int yearComposed;
     private Genre genre;
-    public boolean multiMovement;
+    private boolean multiMovement;
 
     public Composition() {
         super();
@@ -50,9 +49,11 @@ public class Composition implements Serializable {
         this.title = title;
     }
 
-    public int getComposerId() { return composerId; }
+    public int getComposerId() {
+        return composerId; }
 
-    public void setComposerId(int composerId) { this.composerId = composerId; }
+    public void setComposerId(int composerId) {
+        this.composerId = composerId; }
 
     public int getYearComposed() {
         return yearComposed;
@@ -62,9 +63,11 @@ public class Composition implements Serializable {
         this.yearComposed = yearComposed;
     }
 
-    public Genre getGenre() { return genre; }
+    public Genre getGenre() {
+        return genre; }
 
-    public void setGenre(Genre genre) { this.genre = genre; }
+    public void setGenre(Genre genre) {
+        this.genre = genre; }
 
     public boolean getMultiMovement() {
         return multiMovement;

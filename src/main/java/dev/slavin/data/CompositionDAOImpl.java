@@ -13,11 +13,6 @@ import java.util.List;
 public class CompositionDAOImpl implements CompositionDAO {
 
     private Logger logger = LoggerFactory.getLogger(CompositionDAOImpl.class);
-    private static final String TITLE = "TITLE";
-    private static final String COMPOSER_ID = "COMPOSER_ID";
-    private static final String YEAR_COMPOSED = "YEAR_COMPOSED";
-    private static final String GENRE = "GENRE";
-    private static final String MULTI_MOVEMENT = "MULTI_MOVEMENT";
 
     @Override
     public List<Composition> getAllCompositions() {
@@ -28,17 +23,17 @@ public class CompositionDAOImpl implements CompositionDAO {
             ResultSet resultSet = statement.executeQuery("select * from composition");
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String title = resultSet.getString(CompositionDAOImpl.TITLE);
-                int composerId = resultSet.getInt(CompositionDAOImpl.COMPOSER_ID);
-                int yearComposed = resultSet.getInt(CompositionDAOImpl.YEAR_COMPOSED);
-                Genre genre = Genre.valueOf(resultSet.getString(CompositionDAOImpl.GENRE));
-                boolean multiMovement = resultSet.getBoolean(CompositionDAOImpl.MULTI_MOVEMENT);
+                int id = resultSet.getInt(CompositionMapping.ID);
+                String title = resultSet.getString(CompositionMapping.TITLE);
+                int composerId = resultSet.getInt(CompositionMapping.COMPOSER_ID);
+                int yearComposed = resultSet.getInt(CompositionMapping.YEAR_COMPOSED);
+                Genre genre = Genre.valueOf(resultSet.getString(CompositionMapping.GENRE));
+                boolean multiMovement = resultSet.getBoolean(CompositionMapping.MULTI_MOVEMENT);
                 Composition composition = new Composition(id, title, composerId, yearComposed, genre, multiMovement);
                 compositions.add(composition);
             }
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return compositions;
     }
@@ -51,15 +46,15 @@ public class CompositionDAOImpl implements CompositionDAO {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                String title = resultSet.getString(CompositionDAOImpl.TITLE);
-                int composerId = resultSet.getInt(CompositionDAOImpl.COMPOSER_ID);
-                int yearComposed = resultSet.getInt(CompositionDAOImpl.YEAR_COMPOSED);
-                Genre genre = Genre.valueOf(resultSet.getString(CompositionDAOImpl.GENRE));
-                boolean multiMovement = resultSet.getBoolean(CompositionDAOImpl.MULTI_MOVEMENT);
+                String title = resultSet.getString(CompositionMapping.TITLE);
+                int composerId = resultSet.getInt(CompositionMapping.COMPOSER_ID);
+                int yearComposed = resultSet.getInt(CompositionMapping.YEAR_COMPOSED);
+                Genre genre = Genre.valueOf(resultSet.getString(CompositionMapping.GENRE));
+                boolean multiMovement = resultSet.getBoolean(CompositionMapping.MULTI_MOVEMENT);
                 return new Composition(id, title, composerId, yearComposed, genre, multiMovement);
             }
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return null;
     }
@@ -75,15 +70,15 @@ public class CompositionDAOImpl implements CompositionDAO {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                String title = resultSet.getString(CompositionDAOImpl.TITLE);
-                int yearComposed = resultSet.getInt(CompositionDAOImpl.YEAR_COMPOSED);
-                Genre genre = Genre.valueOf(resultSet.getString(CompositionDAOImpl.GENRE));
-                Boolean multiMovement = resultSet.getBoolean(CompositionDAOImpl.MULTI_MOVEMENT);
+                String title = resultSet.getString(CompositionMapping.TITLE);
+                int yearComposed = resultSet.getInt(CompositionMapping.YEAR_COMPOSED);
+                Genre genre = Genre.valueOf(resultSet.getString(CompositionMapping.GENRE));
+                Boolean multiMovement = resultSet.getBoolean(CompositionMapping.MULTI_MOVEMENT);
                 Composition composition = new Composition(id, title, composerId, yearComposed, genre, multiMovement);
                 compositions.add(composition);
             }
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return compositions;
     }
@@ -100,9 +95,9 @@ public class CompositionDAOImpl implements CompositionDAO {
             preparedStatement.setInt(3, composition.getYearComposed());
             preparedStatement.setString(4, composition.getGenre().toString());
             preparedStatement.setBoolean(5, composition.getMultiMovement());
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return null;
     }
@@ -121,7 +116,7 @@ public class CompositionDAOImpl implements CompositionDAO {
             preparedStatement.setInt(6, composition.getId());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
     }
 
@@ -133,7 +128,20 @@ public class CompositionDAOImpl implements CompositionDAO {
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
+    }
+    
+    private void logException(Exception e) {
+        logger.error("{} - {}", e.getClass(), e.getMessage());
+    }
+
+    private static class CompositionMapping {
+        private static final String ID = "id";
+        private static final String TITLE = "title";
+        private static final String COMPOSER_ID = "composer_id";
+        private static final String YEAR_COMPOSED = "year_composed";
+        private static final String GENRE = "genre";
+        private static final String MULTI_MOVEMENT = "multi_movement";
     }
 }

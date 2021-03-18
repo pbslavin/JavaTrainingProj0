@@ -2,7 +2,7 @@ package dev.slavin.controllers;
 
 import dev.slavin.models.Composition;
 import dev.slavin.services.CompositionService;
-
+import dev.slavin.util.ErrorLogger;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import org.slf4j.Logger;
@@ -10,9 +10,12 @@ import org.slf4j.LoggerFactory;
 
 public class CompositionController {
 
-    private Logger logger = LoggerFactory.getLogger(CompositionController.class);
-    private CompositionService compositionService = new CompositionService();
-    private static final String ERROR_MSG = "The service didn't return data.";
+    private final Logger logger = LoggerFactory.getLogger(CompositionController.class);
+    private final ErrorLogger errorLogger = new ErrorLogger(CompositionController.class, logger);
+    private final CompositionService compositionService = new CompositionService();
+
+    private static final String INVALID_COMPOSITION = "That is not a valid composition.";
+    private static final String INVALID_COMPOSITION_ID = " is not a valid composition id.";
 
     public void handleGetAllCompositions(Context ctx) {
         ctx.json(compositionService.getAllCompositions());
@@ -24,8 +27,8 @@ public class CompositionController {
             pathParamId = ctx.pathParam("id");
             ctx.json(compositionService.getComposition(Integer.parseInt(pathParamId)));
         } catch (NullPointerException e) {
-            logger.error(CompositionController.ERROR_MSG);
-            throw new BadRequestResponse("\"" + pathParamId + "\" is not a valid composition id.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse("\"" + pathParamId + CompositionController.INVALID_COMPOSITION_ID);
         }
     }
 
@@ -36,8 +39,8 @@ public class CompositionController {
             int id = Integer.parseInt(pathParamComposerId);
             ctx.json(compositionService.getCompositionsByComposer(id));
         } catch (Exception e) {
-            logger.error(CompositionController.ERROR_MSG);
-            throw new BadRequestResponse("\"" + pathParamComposerId + "\" is not a valid composition id.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse("\"" + pathParamComposerId + "is not a valid composer id.");
         }
     }
 
@@ -46,9 +49,10 @@ public class CompositionController {
         try {
             composition = ctx.bodyAsClass(Composition.class);
             ctx.json(compositionService.addComposition(composition));
+            ctx.status(201);
         } catch (Exception e) {
-            logger.error(CompositionController.ERROR_MSG);
-            throw new BadRequestResponse("That is not a valid composition.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse(CompositionController.INVALID_COMPOSITION);
         }
     }
 
@@ -57,20 +61,23 @@ public class CompositionController {
         try {
             composition = ctx.bodyAsClass(Composition.class);
             ctx.json(compositionService.updateComposition(composition));
+            ctx.status(204);
         } catch (Exception e) {
-            logger.error(CompositionController.ERROR_MSG);
-            throw new BadRequestResponse("That is not a valid composition.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse(CompositionController.INVALID_COMPOSITION);
         }
     }
 
     public void handleDeleteComposition(Context ctx) {
         String pathParamId = "";
         try {
-            pathParamId = ctx.pathParam("composerId");
+            pathParamId = ctx.pathParam("id");
             int id = Integer.parseInt(pathParamId);
             compositionService.deleteComposition(id);
+            ctx.status(204);
         } catch (Exception e) {
-            throw new BadRequestResponse("That is not a valid composition id.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse("\"" + pathParamId + CompositionController.INVALID_COMPOSITION_ID);
         }
     }
 }

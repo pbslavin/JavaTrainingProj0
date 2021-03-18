@@ -1,8 +1,6 @@
 package dev.slavin.data;
 
 import dev.slavin.models.Composer;
-import dev.slavin.models.Composition;
-import dev.slavin.models.Genre;
 import dev.slavin.util.ConnectionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +22,15 @@ public class ComposerDAOImpl implements ComposerDAO {
             ResultSet resultSet = statement.executeQuery("select * from composer");
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                int birthYear = resultSet.getInt("birth_year");
-                int deathYear = resultSet.getInt("death_year");
+                int id = resultSet.getInt(ComposerMapping.ID);
+                String name = resultSet.getString(ComposerMapping.NAME);
+                int birthYear = resultSet.getInt(ComposerMapping.BIRTH_YEAR);
+                int deathYear = resultSet.getInt(ComposerMapping.DEATH_YEAR);
                 Composer composer = new Composer(id, name, birthYear, deathYear);
                 composers.add(composer);
             }
         } catch (SQLException e) {
-            logger.error(e.getClass() + " " + e.getMessage());
+            logException(e);
         }
         return composers;
     }
@@ -45,13 +43,13 @@ public class ComposerDAOImpl implements ComposerDAO {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                int birthYear = resultSet.getInt("birth_year");
-                int deathYear = resultSet.getInt("death_year");
+                String name = resultSet.getString(ComposerMapping.NAME);
+                int birthYear = resultSet.getInt(ComposerMapping.BIRTH_YEAR);
+                int deathYear = resultSet.getInt(ComposerMapping.DEATH_YEAR);
                 return new Composer(id, name, birthYear, deathYear);
             }
         } catch (SQLException e) {
-            logger.error(e.getClass() + " " + e.getMessage());
+            logException(e);
         }
         return null;
     }
@@ -66,16 +64,15 @@ public class ComposerDAOImpl implements ComposerDAO {
             preparedStatement.setString(1, composer.getName());
             preparedStatement.setInt(2, composer.getBirthYear());
             preparedStatement.setInt(3, composer.getDeathYear());
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(e.getClass() + " " + e.getMessage());
+            logException(e);
         }
         return null;
     }
 
     @Override
     public void updateComposer(Composer composer) {
-        Composer oldComposer = getComposerById(composer.getId());
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "update table composer set name = ?, birth_year = ?, death_year = ? where id = ?"
@@ -84,9 +81,9 @@ public class ComposerDAOImpl implements ComposerDAO {
             preparedStatement.setInt(2, composer.getBirthYear());
             preparedStatement.setInt(3, composer.getDeathYear());
             preparedStatement.setInt(4, composer.getId());
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(e.getClass() + " " + e.getMessage());
+            logException(e);
         }
     }
 
@@ -95,9 +92,21 @@ public class ComposerDAOImpl implements ComposerDAO {
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("delete from composer where id = ?")) {
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(e.getClass() + " " + e.getMessage());
+            logException(e);
         }
     }
+
+    private void logException(Exception e) {
+        logger.error("{} - {}", e.getClass(), e.getMessage());
+    }
+
+    private static class ComposerMapping {
+        private static final String ID = "id";
+        private static final String NAME = "name";
+        private static final String BIRTH_YEAR = "birth_year";
+        private static final String DEATH_YEAR = "death_year";
+    }
+
 }

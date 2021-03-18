@@ -33,7 +33,7 @@ class CompositionControllerTest {
 
         List<Composition> Compositions = new ArrayList<>();
         Compositions.add(new Composition("Appalachian Spring",2, 1930, Genre.BALLET,false));
-        Compositions.add(new Composition("Le grand macabre",3, 1978, Genre.OPERA, true));
+        Compositions.add(new Composition("Le grand Macabre",3, 1978, Genre.OPERA, true));
 
         when(service.getAllCompositions()).thenReturn(Compositions);
         CompositionController.handleGetAllCompositions(context);

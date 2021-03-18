@@ -20,14 +20,14 @@ public class UserDAOImpl implements UserDAO {
             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select * from user_data");
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String userName = resultSet.getString("user_name");
-                String password = resultSet.getString("password");
-                int authLevel = resultSet.getInt("auth_level");
+                int id = resultSet.getInt(UserMapping.ID);
+                String userName = resultSet.getString(UserMapping.USERNAME);
+                String password = resultSet.getString(UserMapping.PASSWORD);
+                int authLevel = resultSet.getInt(UserMapping.AUTH_LEVEL);
                 users.add(new User(id, userName, password, authLevel));
             }
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return users;
     }
@@ -39,13 +39,13 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                String userName = resultSet.getString("user_name");
-                String password = resultSet.getString("password");
-                int authLevel = resultSet.getInt("auth_level");
+                String userName = resultSet.getString(UserMapping.USERNAME);
+                String password = resultSet.getString(UserMapping.PASSWORD);
+                int authLevel = resultSet.getInt(UserMapping.AUTH_LEVEL);
                 return new User(id, userName, password, authLevel);
             }
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return null;
     }
@@ -58,12 +58,12 @@ public class UserDAOImpl implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
-                String password = resultSet.getString("password");
-                int authLevel = resultSet.getInt("auth_level");
+                String password = resultSet.getString(UserMapping.PASSWORD);
+                int authLevel = resultSet.getInt(UserMapping.AUTH_LEVEL);
                 return new User(id, userName, password, authLevel);
             }
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return null;
     }
@@ -78,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setInt(3, user.getAuthLevel());
             preparedStatement.executeQuery();
         } catch (Exception e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return user;
     }
@@ -91,7 +91,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
         return user;
     }
@@ -103,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logger.error(String.format("%s %s", e.getClass(), e.getMessage()));
+            logException(e);
         }
     }
 
@@ -114,5 +114,16 @@ public class UserDAOImpl implements UserDAO {
             user = getUserByUserName(userName);
         }
         return user;
+    }
+
+    private void logException(Exception e) {
+        logger.error("{} - {}", e.getClass(), e.getMessage());
+    }
+
+    private static class UserMapping {
+        private static final String ID = "id";
+        private static final String USERNAME = "user_name";
+        private static final String PASSWORD = "password";
+        private static final String AUTH_LEVEL = "auth_level";
     }
 }

@@ -28,6 +28,7 @@ public class JavalinApp {
             path(":id", () -> {
                 get(userController::handleGetUserById);
                 put(userController::handleUpdateUser);
+                delete(userController::handleDeleteUser);
             });
         });
         path("composers", () -> {

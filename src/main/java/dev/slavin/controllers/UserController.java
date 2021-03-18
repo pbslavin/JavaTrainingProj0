@@ -3,6 +3,7 @@ package dev.slavin.controllers;
 import dev.slavin.models.User;
 import dev.slavin.services.UserService;
 
+import dev.slavin.util.ErrorLogger;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
@@ -14,7 +15,13 @@ import java.util.NoSuchElementException;
 public class UserController {
 
     private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private ErrorLogger errorLogger = new ErrorLogger(UserController.class, logger);
     private UserService userService = new UserService();
+
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String INVALID_USER = "That is not a valid user.";
+    private static final String INVALID_USER_ID = " is not a valid user id.";
+    private static final String INVALID_USERNAME = " is not a valid username.";
 
     public void logIn(Context ctx){
         String userName = ctx.formParam("userName");  //(Content-Type: application/x-www-form-urlencoded)
@@ -24,11 +31,11 @@ public class UserController {
                 User user = userService.getUserByUserName(userName);
                 if (password != null && password.equals(user.getPassword())) {
                     if (user.getAuthLevel() == 1) {
-                        ctx.header("Authorization", "general-auth-token");
+                        ctx.header(AUTH_HEADER, "general-auth-token");
                         return;
                     }
                     if (user.getAuthLevel() == 2) {
-                        ctx.header("Authorization", "admin-auth-token");
+                        ctx.header(AUTH_HEADER, "admin-auth-token");
                         return;
                     }
                     throw new NoSuchElementException("There was an unexpected error logging in.");
@@ -42,7 +49,7 @@ public class UserController {
     }
 
     public void adminAuth(Context ctx) {
-        String authHeader = ctx.header("Authorization");
+        String authHeader = ctx.header(AUTH_HEADER);
 
         if (authHeader == null || !authHeader.equals("admin-auth-token")) {
             throw new UnauthorizedResponse("You are unauthorized.");
@@ -65,7 +72,8 @@ public class UserController {
            int id = Integer.parseInt(pathParamId);
            ctx.json(userService.getUser(id));
         } catch (Exception e) {
-            throw new BadRequestResponse("\"" + pathParamId + "\" is not a valid user id.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse("\"" + pathParamId + UserController.INVALID_USER_ID);
         }
     }
 
@@ -75,14 +83,20 @@ public class UserController {
             User user = userService.getUserByUserName(userName);
             ctx.json(user);
         } catch (Exception e) {
-            throw new BadRequestResponse("\"" + userName + "\" is not a valid username.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse("\"" + userName + UserController.INVALID_USERNAME);
         }
     }
 
     public void handleUpdateUser(Context ctx) {
         User user = ctx.bodyAsClass(User.class);
-        userService.updateUser(user);
-        ctx.status(201);
+        try {
+            userService.updateUser(user);
+            ctx.status(204);
+        } catch (Exception e) {
+            errorLogger.logError(e);
+            throw new BadRequestResponse(UserController.INVALID_USER);
+        }
     }
 
     public void handleDeleteUser(Context ctx) {
@@ -91,8 +105,10 @@ public class UserController {
             pathParamId = ctx.pathParam("id");
             int id = Integer.parseInt(pathParamId);
            userService.deleteUser(id);
+           ctx.status(204);
         } catch (Exception e) {
-            throw new BadRequestResponse("\"" + pathParamId + "\" is not a valid composer id.");
+            errorLogger.logError(e);
+            throw new BadRequestResponse("\"" + pathParamId + UserController.INVALID_USER_ID);
         }
     }
 }

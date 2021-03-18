@@ -49,6 +49,16 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
+    void getByComposerPermitsAnyAndFetchesList() {
+        HttpResponse<List<Composition>> response = Unirest.get("http://localhost:7000/compositions/composer/1")
+                .asObject(new GenericType<List<Composition>>() {});
+        assertAll(
+                () -> assertEquals(200, response.getStatus()),
+                () -> assertTrue(response.getBody().size() > 0)
+        );
+    }
+
+    @Test
     void postProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.post("http://localhost:7000/compositions")
                 .asString();
