@@ -1,7 +1,6 @@
 package dev.slavin.models;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Composer implements Serializable {
 

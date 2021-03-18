@@ -7,6 +7,10 @@ import java.sql.SQLException;
 public class ConnectionUtility {
     private static Connection connection;
 
+    private ConnectionUtility() {
+        super();
+    }
+
     public static Connection getConnection() throws SQLException {
 
         try {

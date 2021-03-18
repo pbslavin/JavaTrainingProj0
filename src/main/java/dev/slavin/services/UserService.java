@@ -4,7 +4,6 @@ import dev.slavin.data.UserDAOImpl;
 import dev.slavin.models.User;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class UserService {
 
@@ -37,7 +36,6 @@ public class UserService {
     }
 
     public User logIn(String userName, String password) {
-        User user = userDAO.logIn(userName, password);
-        return user;
+        return userDAO.logIn(userName, password);
     }
 }

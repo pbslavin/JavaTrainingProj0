@@ -13,21 +13,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserControllerIntegrationTest {
+ class UserControllerIntegrationTest {
     private static JavalinApp app = new JavalinApp();
 
     @BeforeAll
-    public static void startService(){
+     static void startService(){
         app.start(7000);
     }
 
     @AfterAll
-    public static void stopService(){
+     static void stopService(){
         app.stop();
     }
 
     @Test
-    public void testGetAllUsersUnauthorized(){
+     void getAllProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.get("http://localhost:7000/users").asString();
         assertAll(
                 () -> assertEquals( 401, response.getStatus()),
@@ -35,7 +35,7 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void testGetAllUsersAuthorized(){
+     void getAllPermitsAuthorized() {
         HttpResponse<List<User>> response = Unirest.get("http://localhost:7000/users")
                 .header("Authorization", "admin-auth-token")
                 .asObject(new GenericType<List<User>>() {});
@@ -45,4 +45,24 @@ public class UserControllerIntegrationTest {
         );
     }
 
+    @Test
+     void getUserProhibitsUnauthorized() {
+        HttpResponse<String> response = Unirest.get("http://localhost:7000/users")
+                .asString();
+        assertAll(
+                () -> assertEquals(401, response.getStatus()),
+                () -> assertEquals("You are unauthorized.", response.getBody())
+        );
+    }
+
+    @Test
+     void getPermitsAuthorized() {
+        HttpResponse<User> response = Unirest.get("http://localhost:7000/users/1")
+                .header("Authorization", "admin-auth-token")
+                .asObject(new GenericType<User>() {});
+        assertAll(
+                () -> assertEquals(200, response.getStatus()),
+                () -> assertNotNull(response.getBody())
+        );
+    }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class ComposerControllerTest {
+class ComposerControllerTest {
     @InjectMocks
     private ComposerController composerController;
 
@@ -22,12 +22,12 @@ public class ComposerControllerTest {
     private ComposerService service;
 
     @BeforeEach
-    public void initMocks() {
+    void initMocks() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testGetAllComposersHandler() {
+    void getAllCallsServiceMethod() {
         Context context = mock(Context.class);
 
         List<Composer> composers = new ArrayList<>();

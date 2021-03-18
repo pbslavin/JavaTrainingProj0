@@ -1,8 +1,18 @@
-dev/slavin/controllers/ComposerControllerTest.java
- dev.slavin.controllers.ComposerControllerTest
 dev/slavin/controllers/ComposerControllerIntegrationTest.java
  dev.slavin.controllers.ComposerControllerIntegrationTest
  dev.slavin.controllers.ComposerControllerIntegrationTest$1
+ dev.slavin.controllers.ComposerControllerIntegrationTest$2
+dev/slavin/controllers/UserControllerTest.java
+ dev.slavin.controllers.UserControllerTest
+dev/slavin/controllers/CompositionControllerIntegrationTest.java
+ dev.slavin.controllers.CompositionControllerIntegrationTest
+ dev.slavin.controllers.CompositionControllerIntegrationTest$1
+ dev.slavin.controllers.CompositionControllerIntegrationTest$2
 dev/slavin/controllers/UserControllerIntegrationTest.java
  dev.slavin.controllers.UserControllerIntegrationTest
  dev.slavin.controllers.UserControllerIntegrationTest$1
+ dev.slavin.controllers.UserControllerIntegrationTest$2
+dev/slavin/controllers/ComposerControllerTest.java
+ dev.slavin.controllers.ComposerControllerTest
+dev/slavin/controllers/CompositionControllerTest.java
+ dev.slavin.controllers.CompositionControllerTest

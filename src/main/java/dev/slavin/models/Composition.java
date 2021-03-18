@@ -17,7 +17,7 @@ public class Composition implements Serializable {
         super();
     }
 
-    public Composition(String title, String composer, int yearComposed, Genre genre, Boolean multiMovement) {
+    public Composition(String title, int composerId, int yearComposed, Genre genre, Boolean multiMovement) {
         this.title = title;
         this.composerId = composerId;
         this.yearComposed = yearComposed;

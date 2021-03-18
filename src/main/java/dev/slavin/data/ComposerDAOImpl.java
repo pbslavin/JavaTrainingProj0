@@ -19,8 +19,8 @@ public class ComposerDAOImpl implements ComposerDAO {
     public List<Composer> getAllComposers() {
         List<Composer> composers = new ArrayList<>();
 
-        try (Connection connection = ConnectionUtility.getConnection()) {
-            Statement statement = connection.createStatement();
+        try (Connection connection = ConnectionUtility.getConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("select * from composer");
 
             while (resultSet.next()) {
@@ -39,8 +39,9 @@ public class ComposerDAOImpl implements ComposerDAO {
 
     @Override
     public Composer getComposerById(int id) {
-        try (Connection connection = ConnectionUtility.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from composer where id = ?");
+        try (Connection connection = ConnectionUtility.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "select * from composer where id = ?")) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -57,11 +58,11 @@ public class ComposerDAOImpl implements ComposerDAO {
 
     @Override
     public Composer addNewComposer(Composer composer) {
-        try (Connection connection = ConnectionUtility.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                "insert into composer (name, birth_year, death_year) " +
-                        "values (?, ?, ?)"
-            );
+        try (Connection connection = ConnectionUtility.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "insert into composer (name, birth_year, death_year) " +
+                             "values (?, ?, ?)"
+             )) {
             preparedStatement.setString(1, composer.getName());
             preparedStatement.setInt(2, composer.getBirthYear());
             preparedStatement.setInt(3, composer.getDeathYear());
@@ -75,10 +76,10 @@ public class ComposerDAOImpl implements ComposerDAO {
     @Override
     public void updateComposer(Composer composer) {
         Composer oldComposer = getComposerById(composer.getId());
-        try (Connection connection = ConnectionUtility.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "update table composer set name = ?, birth_year = ?, death_year = ? where id = ?"
-            );
+        try (Connection connection = ConnectionUtility.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "update table composer set name = ?, birth_year = ?, death_year = ? where id = ?"
+             )) {
             preparedStatement.setString(1, composer.getName());
             preparedStatement.setInt(2, composer.getBirthYear());
             preparedStatement.setInt(3, composer.getDeathYear());
@@ -91,8 +92,8 @@ public class ComposerDAOImpl implements ComposerDAO {
 
     @Override
     public void deleteComposer(int id) {
-        try (Connection connection = ConnectionUtility.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("delete from composer where id = ?");
+        try (Connection connection = ConnectionUtility.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("delete from composer where id = ?")) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {

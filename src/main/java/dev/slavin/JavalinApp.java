@@ -15,19 +15,29 @@ public class JavalinApp {
 
     Javalin app = Javalin.create().routes(() -> {
         before(ctx -> {
-            if (ctx.method() != "GET") {
+            if (!ctx.method().equals("GET") && !ctx.path().equals("/login")) {
                 userController.adminAuth(ctx);
             }
+        });
+        path("login", () -> post(userController::logIn));
+        before("users", userController::adminAuth );
+        path("users", () -> {
+            get(userController::handleGetAllUsers);
+            post(userController::handleAddUser);
+            path("username/:userName", () -> get(userController::handleGetUserByUserName));
+            path(":id", () -> {
+                get(userController::handleGetUserById);
+                put(userController::handleUpdateUser);
+            });
         });
         path("composers", () -> {
             get(composerController::handleGetAllComposers);
             post(composerController::handleAddNewComposer);
-            path(":id", this::addEndpoints);
-        });
-        before("compositions", ctx -> {
-            if (ctx.method() != "GET") {
-                userController.adminAuth(ctx);
-            }
+            path(":id", () -> {
+                get(composerController::handleGetComposerById);
+                put(composerController::handleUpdateComposer);
+                delete(composerController::handleDeleteComposer);
+            });
         });
         path("compositions", () -> {
             get(compositionController::handleGetAllCompositions);
@@ -37,24 +47,7 @@ public class JavalinApp {
                 put(compositionController::handleUpdateComposition);
                 delete(compositionController::handleDeleteComposition);
             });
-            path("composer/:composerId", () -> {
-                get(compositionController::handleGetCompositionsByComposer);
-            });
-        });
-        path("login", () -> {
-            post(userController::logIn);
-        });
-        before("users", userController::adminAuth );
-        path("users", () -> {
-            get(userController::handleGetAllUsers);
-            post(userController::handleAddUser);
-            path("username/:userName", () -> {
-                get(userController::handleGetUserByUserName);
-            });
-            path(":id", () -> {
-                get(userController::handleGetUserById);
-                put(userController::handleUpdateUser);
-            });
+            path("composer/:composerId", () -> get(compositionController::handleGetCompositionsByComposer));
         });
     });
 
@@ -64,11 +57,5 @@ public class JavalinApp {
 
     public void stop() {
         this.app.stop();
-    }
-
-    private void addEndpoints() {
-        get(composerController::handleGetComposerById);
-        put(composerController::handleUpdateComposer);
-        delete(composerController::handleDeleteComposer);
     }
 }

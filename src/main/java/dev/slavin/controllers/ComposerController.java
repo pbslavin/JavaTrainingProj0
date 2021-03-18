@@ -1,7 +1,6 @@
 package dev.slavin.controllers;
 
 import dev.slavin.models.Composer;
-import dev.slavin.models.Composition;
 import dev.slavin.services.ComposerService;
 
 import io.javalin.http.BadRequestResponse;
@@ -11,8 +10,9 @@ import org.slf4j.LoggerFactory;
 
 public class ComposerController {
 
-    private Logger logger = LoggerFactory.getLogger(ComposerController.class);
     private ComposerService composerService = new ComposerService();
+    private static final String invalidComposer = "That is not a valid composer.";
+    private static final String invalidComposerId = "is not a valid composer id.";
 
     public void handleGetAllComposers (Context ctx) {
         ctx.json(composerService.getAllComposers());
@@ -25,7 +25,7 @@ public class ComposerController {
             int id = Integer.parseInt(pathParamId);
             ctx.json(composerService.getComposer(id));
         } catch (Exception e) {
-            throw new BadRequestResponse("\"" + pathParamId + "\" is not a valid composer id.");
+            throw new BadRequestResponse("\"" + pathParamId + ComposerController.invalidComposerId);
         }
     }
 
@@ -36,7 +36,7 @@ public class ComposerController {
             composerService.addComposer(composer);
             ctx.status(201);
         } catch (Exception e) {
-            throw new BadRequestResponse("That is not a valid composer.");
+            throw new BadRequestResponse(ComposerController.invalidComposer);
         }
     }
 
@@ -46,7 +46,7 @@ public class ComposerController {
             composer = ctx.bodyAsClass(Composer.class);
             composerService.updateComposer(composer);
         } catch (Exception e) {
-            throw new BadRequestResponse("That is not a valid composer.");
+            throw new BadRequestResponse(ComposerController.invalidComposer);
         }
     }
 
@@ -57,7 +57,7 @@ public class ComposerController {
             int id = Integer.parseInt(pathParamId);
             composerService.deleteComposer(id);
         } catch (Exception e) {
-            throw new BadRequestResponse("That is not a valid composer.");
+            throw new BadRequestResponse(ComposerController.invalidComposer);
         }
     }
 }

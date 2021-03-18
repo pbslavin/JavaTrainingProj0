@@ -19,87 +19,93 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ComposerControllerIntegrationTest {
+class ComposerControllerIntegrationTest {
     private static JavalinApp app = new JavalinApp();
 
     @BeforeAll
-    public static void startService(){
+    static void startService(){
         app.start(7000);
     }
 
     @AfterAll
-    public static void stopService(){
+    static void stopService(){
         app.stop();
     }
 
     @Test
-    public void testAddComposerUnauthorized() {
-        HttpResponse<String> response = Unirest.post("http://localhost:7000/composers")
-                .asString();
+    void getAllPermitsAnyAndFetchesList() {
+        HttpResponse<List<Composer>> response = Unirest.get("http://localhost:7000/composers")
+                .asObject(new GenericType<List<Composer>>() {});
         assertAll(
-                () -> assertEquals( 401, response.getStatus()),
-                () -> assertEquals( "You are unauthorized.", response.getBody()));
+                () -> assertEquals(200, response.getStatus()),
+                () -> assertTrue(response.getBody().size() > 0)
+        );
     }
 
     @Test
-    public void testAddComposerAuthorized() {
-        HttpResponse<String> response = Unirest.post("http://localhost:7000/composers")
-                .header("Authorization", "admin-auth-token")
-                .asString();
-        assertAll(
-                () -> assertEquals( 400, response.getStatus()),
-                () -> assertEquals( "That is not a valid composer.", response.getBody()));
-
-    }
-
-    @Test
-    public void testUpdateComposerUnauthorized() {
-        HttpResponse<String> response = Unirest.put("http://localhost:7000/composers/hello")
-                .asString();
-        assertAll(
-                () -> assertEquals( 401, response.getStatus()),
-                () -> assertEquals( "You are unauthorized.", response.getBody()));
-    }
-
-    @Test
-    public void testUpdateComposerAuthorized() {
-        HttpResponse<String> response = Unirest.put("http://localhost:7000/composers/hello")
-                .header("Authorization", "admin-auth-token")
-                .asString();
-        assertAll(
-                () -> assertEquals( 400, response.getStatus()),
-                () -> assertEquals( "That is not a valid composer.", response.getBody()));
-
-    }
-
-    @Test
-    public void testDeleteComposerUnauthorized() {
-        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/hello")
-                .asString();
-        assertAll(
-                () -> assertEquals( 401, response.getStatus()),
-                () -> assertEquals( "You are unauthorized.", response.getBody()));
-    }
-
-    @Test
-    public void testDeleteComposerAuthorized() {
-        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/hello")
-                .header("Authorization", "admin-auth-token")
-                .asString();
-        assertAll(
-                () -> assertEquals( 400, response.getStatus()),
-                () -> assertEquals( "That is not a valid composer.", response.getBody()));
-
-    }
-
-    @Test
-    public void testGetComposerById() {
+    void getPermitsAnyAndFetchesComposer() {
         HttpResponse<Composer> response = Unirest.get("http://localhost:7000/composers/1")
                 .asObject(new GenericType<Composer>() {});
         assertAll(
                 () -> assertEquals(200, response.getStatus()),
-                () -> assertTrue(response.getBody() != null)
+                () -> assertNotNull(response.getBody())
         );
     }
 
+    @Test
+    void postProhibitsUnauthorized() {
+        HttpResponse<String> response = Unirest.post("http://localhost:7000/composers")
+                .asString();
+        assertAll(
+                () -> assertEquals( 401, response.getStatus()),
+                () -> assertEquals( "You are unauthorized.", response.getBody()));
+    }
+
+    @Test
+    void postPermitsAuthorized() {
+        HttpResponse<String> response = Unirest.post("http://localhost:7000/composers")
+                .header("Authorization", "admin-auth-token")
+                .asString();
+        assertAll(
+                () -> assertEquals( 400, response.getStatus()),
+                () -> assertEquals( "That is not a valid composer.", response.getBody()));
+    }
+
+    @Test
+    void putProhibitsUnauthorized() {
+        HttpResponse<String> response = Unirest.put("http://localhost:7000/composers")
+                .asString();
+        assertAll(
+                () -> assertEquals( 401, response.getStatus()),
+                () -> assertEquals( "You are unauthorized.", response.getBody()));
+    }
+
+    @Test
+    void putPermitsAuthorized() {
+        HttpResponse<String> response = Unirest.put("http://localhost:7000/composers/1")
+                .header("Authorization", "admin-auth-token")
+                .asString();
+        assertAll(
+                () -> assertEquals( 400, response.getStatus()),
+                () -> assertEquals( "That is not a valid composer.", response.getBody()));
+    }
+
+    @Test
+    void deleteProhibitsUnauthorized() {
+        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/hello")
+                .asString();
+        assertAll(
+                () -> assertEquals( 401, response.getStatus()),
+                () -> assertEquals( "You are unauthorized.", response.getBody()));
+    }
+
+    @Test
+    void deletePermitsAuthorized() {
+        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/hello")
+                .header("Authorization", "admin-auth-token")
+                .asString();
+        assertAll(
+                () -> assertEquals( 400, response.getStatus()),
+                () -> assertEquals( "That is not a valid composer.", response.getBody()));
+    }
 }
