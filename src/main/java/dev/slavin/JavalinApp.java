@@ -20,17 +20,20 @@ public class JavalinApp {
             }
         });
         path("login", () -> post(userController::logIn));
-        before("users", userController::adminAuth );
+        before("users", userController::adminAuth);
         path("users", () -> {
             get(userController::handleGetAllUsers);
             post(userController::handleAddUser);
+            before("users/username/:username", userController::adminAuth);
             path("username/:userName", () -> get(userController::handleGetUserByUserName));
+            before("users/:id", userController::adminAuth);
             path(":id", () -> {
                 get(userController::handleGetUserById);
                 put(userController::handleUpdateUser);
                 delete(userController::handleDeleteUser);
             });
         });
+        before("composers", userController::adminAuth);
         path("composers", () -> {
             get(composerController::handleGetAllComposers);
             post(composerController::handleAddNewComposer);

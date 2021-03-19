@@ -50,7 +50,6 @@ public class UserController {
 
     public void adminAuth(Context ctx) {
         String authHeader = ctx.header(AUTH_HEADER);
-
         if (authHeader == null || !authHeader.equals("admin-auth-token")) {
             throw new UnauthorizedResponse("You are unauthorized.");
         }
@@ -92,7 +91,7 @@ public class UserController {
         User user = ctx.bodyAsClass(User.class);
         try {
             userService.updateUser(user);
-            ctx.status(204);
+            ctx.status(201);
         } catch (Exception e) {
             errorLogger.logError(e);
             throw new BadRequestResponse(UserController.INVALID_USER);

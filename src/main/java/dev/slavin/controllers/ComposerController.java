@@ -51,7 +51,7 @@ public class ComposerController {
         try {
             composer = ctx.bodyAsClass(Composer.class);
             composerService.updateComposer(composer);
-            ctx.status(204);
+            ctx.status(201);
         } catch (Exception e) {
             errorLogger.logError(e);
             throw new BadRequestResponse(ComposerController.INVALID_COMPOSER);

@@ -62,7 +62,7 @@ public class CompositionController {
         try {
             composition = ctx.bodyAsClass(Composition.class);
             ctx.json(compositionService.updateComposition(composition));
-            ctx.status(204);
+            ctx.status(201);
         } catch (Exception e) {
             errorLogger.logError(e);
             throw new BadRequestResponse(CompositionController.INVALID_COMPOSITION);

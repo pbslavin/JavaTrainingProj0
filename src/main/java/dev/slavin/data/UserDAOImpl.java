@@ -31,6 +31,7 @@ public class UserDAOImpl implements UserDAO {
             }
         } catch (SQLException e) {
             errorLogger.logError(e);
+            throw new NoSuchElementException();
         }
         return users;
     }
@@ -49,6 +50,7 @@ public class UserDAOImpl implements UserDAO {
             }
         } catch (SQLException e) {
             errorLogger.logError(e);
+            throw new NoSuchElementException();
         }
         return null;
     }
@@ -67,6 +69,7 @@ public class UserDAOImpl implements UserDAO {
             }
         } catch (SQLException e) {
             errorLogger.logError(e);
+            throw new NoSuchElementException();
         }
         return null;
     }
@@ -82,6 +85,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.executeQuery();
         } catch (Exception e) {
             errorLogger.logError(e);
+            throw new NoSuchElementException();
         }
         return user;
     }
@@ -90,8 +94,10 @@ public class UserDAOImpl implements UserDAO {
     public User updateUser(User user) {
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "update user_data set userName = ?, password = ?, authLevel = ?")) {
-            preparedStatement.setString(1, user.getUserName());
+                     "update user_data set password = ?, auth_level = ? where id = ?")) {
+            preparedStatement.setString(1, user.getPassword());
+            preparedStatement.setInt(2, user.getAuthLevel());
+            preparedStatement.setInt(3, user.getId());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
             errorLogger.logError(e);
@@ -107,7 +113,6 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.executeQuery();
         } catch (SQLException e) {
             errorLogger.logError(e);
-            throw new NoSuchElementException();
         }
     }
 
