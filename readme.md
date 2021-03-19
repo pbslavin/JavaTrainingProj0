@@ -2,7 +2,7 @@ Score Service
 
 This REST api provides access to two related resources, Composers and 
 Compositions. Composers may have multiple Compositions, which possess a foreign key.
-The two resources are associated with `composers` and `composition` endpoints,
+The two resources are associated with `composers` and `compositions` endpoints,
 respectively.
 
 There is also a third table consisting of Users, with base endpoint `users`. Users 
