@@ -11,13 +11,13 @@ or forbidden to access restricted endpoints or methods through the issuance of a
 are subject to all CRUDL operations, if they are authorized.
 
 Users with level-1 (or "general") authorization tokens may only send GET requests 
-to any Composer or Composition endpoints, and may not access *any* User endpoint by *any* 
+to any Composer or Composition endpoint, and may not access *any* User endpoint by *any* 
 HTTP method. Level-2 ("admin") authorization tokens permit access to all method handlers,
 including those of Users.
 
 In addition to CRUDL operations, with standard RESTful routes, it is 
-also possible to GET all Compositions belonging to a Composer, by id, or a single User by 
-username, which has must be unique in the database. Each of these methods interpolates an additional route segment 
+also possible to GET all Compositions belonging to a Composer by id, or to GET a single User by 
+username (which has a uniqueness constraint in the database). Each of these methods interpolates an additional route segment 
 (`composer` or `username`) between the primary resource's path segment and 
 the composer id or case-sensitive username (`/compositions/composer/4` or 
 `/users/username/PSlavin`).
