@@ -15,25 +15,32 @@ public class JavalinApp {
 
     Javalin app = Javalin.create().routes(() -> {
         before(ctx -> {
+            if (!ctx.path().equals("/login")) {
+                userController.isLoggedIn(ctx);
+            }
+        });
+        before(ctx -> {
             if (!ctx.method().equals("GET") && !ctx.path().equals("/login")) {
                 userController.adminAuth(ctx);
             }
         });
-        path("login", () -> post(userController::logIn));
         before("users", userController::adminAuth);
+        path("login", () -> post(userController::logIn));
         path("users", () -> {
             get(userController::handleGetAllUsers);
             post(userController::handleAddUser);
-            before("users/username/:username", userController::adminAuth);
             path("username/:userName", () -> get(userController::handleGetUserByUserName));
-            before("users/:id", userController::adminAuth);
             path(":id", () -> {
                 get(userController::handleGetUserById);
                 put(userController::handleUpdateUser);
                 delete(userController::handleDeleteUser);
             });
         });
-        before("composers", userController::adminAuth);
+        before("composers", ctx -> {
+            if (!ctx.method().equals("GET")) {
+                userController.adminAuth(ctx);
+            }
+        });
         path("composers", () -> {
             get(composerController::handleGetAllComposers);
             post(composerController::handleAddNewComposer);

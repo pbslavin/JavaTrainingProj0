@@ -53,7 +53,7 @@ class ComposerControllerIntegrationTest {
     }
 
     @Test
-    void postProhibitsUnauthorized() {
+    void postComposerProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.post("http://localhost:7000/composers")
                 .asString();
         assertAll(
@@ -62,7 +62,7 @@ class ComposerControllerIntegrationTest {
     }
 
     @Test
-    void postPermitsAuthorized() {
+    void postComposerPermitsAuthorized() {
         HttpResponse<String> response = Unirest.post("http://localhost:7000/composers")
                 .header("Authorization", "admin-auth-token")
                 .asString();
@@ -72,7 +72,7 @@ class ComposerControllerIntegrationTest {
     }
 
     @Test
-    void putProhibitsUnauthorized() {
+    void putComposerProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.put("http://localhost:7000/composers")
                 .asString();
         assertAll(
@@ -81,7 +81,7 @@ class ComposerControllerIntegrationTest {
     }
 
     @Test
-    void putPermitsAuthorized() {
+    void putComposerPermitsAuthorized() {
         HttpResponse<String> response = Unirest.put("http://localhost:7000/composers/1")
                 .header("Authorization", "admin-auth-token")
                 .asString();
@@ -91,7 +91,7 @@ class ComposerControllerIntegrationTest {
     }
 
     @Test
-    void deleteProhibitsUnauthorized() {
+    void deleteComposerProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/0")
                 .asString();
         assertAll(
@@ -100,7 +100,7 @@ class ComposerControllerIntegrationTest {
     }
 
     @Test
-    void deletePermitsAuthorized() {
+    void deleteComposerPermitsAuthorized() {
         HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/0")
                 .header("Authorization", "admin-auth-token")
                 .asString();

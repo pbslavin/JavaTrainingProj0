@@ -59,7 +59,7 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
-    void postProhibitsUnauthorized() {
+    void postCompositionProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.post("http://localhost:7000/compositions")
                 .asString();
         assertAll(
@@ -68,7 +68,7 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
-    void postPermitsAuthorized() {
+    void postCompositionPermitsAuthorized() {
         HttpResponse<String> response = Unirest.post("http://localhost:7000/compositions")
                 .header("Authorization", "admin-auth-token")
                 .asString();
@@ -78,7 +78,7 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
-    void putProhibitsUnauthorized() {
+    void putCompositionProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.put("http://localhost:7000/compositions")
                 .asString();
         assertAll(
@@ -87,7 +87,7 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
-    void putPermitsAuthorized() {
+    void putCompositionPermitsAuthorized() {
         HttpResponse<String> response = Unirest.put("http://localhost:7000/compositions/1")
                 .header("Authorization", "admin-auth-token")
                 .asString();
@@ -97,7 +97,7 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
-    void deleteProhibitsUnauthorized() {
+    void deleteCompositionProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.delete("http://localhost:7000/compositions/0")
                 .asString();
         assertAll(
@@ -111,7 +111,7 @@ class CompositionControllerIntegrationTest {
                 .header("Authorization", "admin-auth-token")
                 .asString();
         assertAll(
-                () -> assertEquals( 400, response.getStatus()),
-                () -> assertEquals( "0 is not a valid composition id.", response.getBody()));
+                () -> assertEquals( 204, response.getStatus()),
+                () -> assertEquals( "", response.getBody()));
     }
 }

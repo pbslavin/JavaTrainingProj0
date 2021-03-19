@@ -6,6 +6,7 @@ import dev.slavin.services.UserService;
 import dev.slavin.util.ErrorLogger;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
+import io.javalin.http.ForbiddenResponse;
 import io.javalin.http.UnauthorizedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,12 @@ public class UserController {
                 throw new UnauthorizedResponse("That username and password combination is incorrect.");
             }
 
+        }
+    }
+
+    public void isLoggedIn(Context ctx) {
+        if (ctx.header(AUTH_HEADER) == null) {
+            throw new ForbiddenResponse("You must log in.");
         }
     }
 

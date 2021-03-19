@@ -84,7 +84,7 @@ public class ComposerDAOImpl implements ComposerDAO {
             preparedStatement.setInt(2, composer.getBirthYear());
             preparedStatement.setInt(3, composer.getDeathYear());
             preparedStatement.setInt(4, composer.getId());
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             errorLogger.logError(e);
         }

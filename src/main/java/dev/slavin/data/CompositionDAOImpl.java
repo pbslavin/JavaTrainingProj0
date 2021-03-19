@@ -117,7 +117,7 @@ public class CompositionDAOImpl implements CompositionDAO {
             preparedStatement.setString(4, composition.getGenre().toString());
             preparedStatement.setBoolean(5, composition.getMultiMovement());
             preparedStatement.setInt(6, composition.getId());
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             errorLogger.logError(e);
         }
@@ -129,10 +129,9 @@ public class CompositionDAOImpl implements CompositionDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "delete from composition where id = ?")) {
             preparedStatement.setInt(1, id);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             errorLogger.logError(e);
-            throw new NoSuchElementException();
         }
     }
 

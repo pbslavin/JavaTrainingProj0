@@ -82,35 +82,41 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setInt(3, user.getAuthLevel());
-            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int newId = resultSet.getInt("id");
+                user.setId(newId);
+            } else {
+                logger.error("The record could.");
+                return null;
+            }
         } catch (Exception e) {
             errorLogger.logError(e);
-            throw new NoSuchElementException();
+            return null;
         }
         return user;
     }
 
     @Override
-    public User updateUser(User user) {
+    public void updateUser(User user) {
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "update user_data set password = ?, auth_level = ? where id = ?")) {
             preparedStatement.setString(1, user.getPassword());
             preparedStatement.setInt(2, user.getAuthLevel());
             preparedStatement.setInt(3, user.getId());
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             errorLogger.logError(e);
         }
-        return user;
     }
 
     @Override
     public void deleteUser(int id) {
         try (Connection connection = ConnectionUtility.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("delete from user where id = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("delete from user_data where id = ?")) {
             preparedStatement.setInt(1, id);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             errorLogger.logError(e);
         }
