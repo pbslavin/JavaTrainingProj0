@@ -36,11 +36,6 @@ public class JavalinApp {
                 delete(userController::handleDeleteUser);
             });
         });
-//        before("composers", ctx -> {
-//            if (!ctx.method().equals("GET")) {
-//                userController.adminAuth(ctx);
-//            }
-//        });
         path("composers", () -> {
             get(composerController::handleGetAllComposers);
             post(composerController::handleAddNewComposer);
