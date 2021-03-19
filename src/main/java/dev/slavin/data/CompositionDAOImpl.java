@@ -3,16 +3,20 @@ package dev.slavin.data;
 import dev.slavin.models.Composition;
 import dev.slavin.models.Genre;
 import dev.slavin.util.ConnectionUtility;
+import dev.slavin.util.ErrorLogger;
+import io.javalin.http.BadRequestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class CompositionDAOImpl implements CompositionDAO {
 
     private Logger logger = LoggerFactory.getLogger(CompositionDAOImpl.class);
+    private ErrorLogger errorLogger = new ErrorLogger(CompositionDAOImpl.class, logger);
 
     @Override
     public List<Composition> getAllCompositions() {
@@ -33,7 +37,7 @@ public class CompositionDAOImpl implements CompositionDAO {
                 compositions.add(composition);
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return compositions;
     }
@@ -54,7 +58,7 @@ public class CompositionDAOImpl implements CompositionDAO {
                 return new Composition(id, title, composerId, yearComposed, genre, multiMovement);
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return null;
     }
@@ -78,7 +82,7 @@ public class CompositionDAOImpl implements CompositionDAO {
                 compositions.add(composition);
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return compositions;
     }
@@ -97,7 +101,7 @@ public class CompositionDAOImpl implements CompositionDAO {
             preparedStatement.setBoolean(5, composition.getMultiMovement());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return null;
     }
@@ -116,7 +120,7 @@ public class CompositionDAOImpl implements CompositionDAO {
             preparedStatement.setInt(6, composition.getId());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
     }
 
@@ -124,16 +128,13 @@ public class CompositionDAOImpl implements CompositionDAO {
     public void deleteComposition(int id) {
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "delete from table composition where id = ?")) {
+                     "delete from composition where id = ?")) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
+            throw new NoSuchElementException();
         }
-    }
-    
-    private void logException(Exception e) {
-        logger.error("{} - {}", e.getClass(), e.getMessage());
     }
 
     private static class CompositionMapping {

@@ -33,7 +33,7 @@ class ComposerControllerIntegrationTest {
     }
 
     @Test
-    void getAllPermitsAnyAndFetchesList() {
+    void getAllComposersPermitsAnyAndFetchesList() {
         HttpResponse<List<Composer>> response = Unirest.get("http://localhost:7000/composers")
                 .asObject(new GenericType<List<Composer>>() {});
         assertAll(
@@ -92,7 +92,7 @@ class ComposerControllerIntegrationTest {
 
     @Test
     void deleteProhibitsUnauthorized() {
-        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/hello")
+        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/0")
                 .asString();
         assertAll(
                 () -> assertEquals( 401, response.getStatus()),
@@ -101,11 +101,11 @@ class ComposerControllerIntegrationTest {
 
     @Test
     void deletePermitsAuthorized() {
-        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/hello")
+        HttpResponse<String> response = Unirest.delete("http://localhost:7000/composers/0")
                 .header("Authorization", "admin-auth-token")
                 .asString();
         assertAll(
                 () -> assertEquals( 400, response.getStatus()),
-                () -> assertEquals( "That is not a valid composer.", response.getBody()));
+                () -> assertEquals( "0 is not a valid composer id.", response.getBody()));
     }
 }

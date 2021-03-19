@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void getAllProhibitsUnauthorized() {
+     void getAllUsersProhibitsUnauthorized() {
         HttpResponse<String> response = Unirest.get("http://localhost:7000/users").asString();
         assertAll(
                 () -> assertEquals( 401, response.getStatus()),
@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
 
     @Test
-     void getPermitsAuthorized() {
+     void getUserPermitsAuthorized() {
         HttpResponse<User> response = Unirest.get("http://localhost:7000/users/1")
                 .header("Authorization", "admin-auth-token")
                 .asObject(new GenericType<User>() {});

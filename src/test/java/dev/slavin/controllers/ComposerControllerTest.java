@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-class ComposerControllerTest {
+public class ComposerControllerTest {
     @InjectMocks
     private ComposerController composerController;
 
@@ -22,18 +22,18 @@ class ComposerControllerTest {
     private ComposerService service;
 
     @BeforeEach
-    void initMocks() {
+    public void initMocks() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void getAllCallsServiceMethod() {
+    public void getAllComposersCallsServiceMethod() {
         Context context = mock(Context.class);
 
         List<Composer> composers = new ArrayList<>();
-        composers.add(new Composer("Aaron Copland",1900, 1990));
-        composers.add(new Composer("Gyorgy Ligeti",1923, 2006));
-        composers.add(new Composer("Johann Sebastian Bach",1685, 1750));
+        composers.add(new Composer(2,"Aaron Copland",1900, 1990));
+        composers.add(new Composer(4,"Gyorgy Ligeti",1923, 2006));
+        composers.add(new Composer(5,"Johann Sebastian Bach",1685, 1750));
 
         when(service.getAllComposers()).thenReturn(composers);
         composerController.handleGetAllComposers(context);

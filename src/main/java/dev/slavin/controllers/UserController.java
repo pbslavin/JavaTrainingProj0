@@ -13,15 +13,14 @@ import org.slf4j.LoggerFactory;
 import java.util.NoSuchElementException;
 
 public class UserController {
-
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
-    private ErrorLogger errorLogger = new ErrorLogger(UserController.class, logger);
-    private UserService userService = new UserService();
-
     private static final String AUTH_HEADER = "Authorization";
     private static final String INVALID_USER = "That is not a valid user.";
     private static final String INVALID_USER_ID = " is not a valid user id.";
     private static final String INVALID_USERNAME = " is not a valid username.";
+
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final ErrorLogger errorLogger = new ErrorLogger(UserController.class, logger);
+    private final UserService userService = new UserService();
 
     public void logIn(Context ctx){
         String userName = ctx.formParam("userName");  //(Content-Type: application/x-www-form-urlencoded)

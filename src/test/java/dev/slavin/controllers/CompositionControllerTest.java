@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-class CompositionControllerTest {
+public class CompositionControllerTest {
     @InjectMocks
     private CompositionController CompositionController;
 
@@ -23,20 +23,20 @@ class CompositionControllerTest {
     private CompositionService service;
 
     @BeforeEach
-    void initMocks() {
+    public void initMocks() {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void getAllCallsServiceMethod() {
+    public void getAllCompositionsCallsServiceMethod() {
         Context context = mock(Context.class);
 
-        List<Composition> Compositions = new ArrayList<>();
-        Compositions.add(new Composition("Appalachian Spring",2, 1930, Genre.BALLET,false));
-        Compositions.add(new Composition("Le grand Macabre",3, 1978, Genre.OPERA, true));
+        List<Composition> compositions = new ArrayList<>();
+        compositions.add(new Composition("Appalachian Spring",2, 1930, Genre.BALLET,false));
+        compositions.add(new Composition("Le grand Macabre",3, 1978, Genre.OPERA, true));
 
-        when(service.getAllCompositions()).thenReturn(Compositions);
+        when(service.getAllCompositions()).thenReturn(compositions);
         CompositionController.handleGetAllCompositions(context);
-        verify(context).json(Compositions);
+        verify(context).json(compositions);
     }
 }

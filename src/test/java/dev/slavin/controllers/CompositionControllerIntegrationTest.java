@@ -29,7 +29,7 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
-    void getAllPermitsAnyAndFetchesList() {
+    void getAllCompositionsPermitsAnyAndFetchesList() {
         HttpResponse<List<Composition>> response = Unirest.get("http://localhost:7000/compositions")
                 .asObject(new GenericType<List<Composition>>() {});
         assertAll(
@@ -98,7 +98,7 @@ class CompositionControllerIntegrationTest {
 
     @Test
     void deleteProhibitsUnauthorized() {
-        HttpResponse<String> response = Unirest.delete("http://localhost:7000/compositions/hello")
+        HttpResponse<String> response = Unirest.delete("http://localhost:7000/compositions/0")
                 .asString();
         assertAll(
                 () -> assertEquals( 401, response.getStatus()),
@@ -106,12 +106,12 @@ class CompositionControllerIntegrationTest {
     }
 
     @Test
-    void deletePermitsAuthorized() {
-        HttpResponse<String> response = Unirest.delete("http://localhost:7000/compositions/hello")
+    void deleteCompositionPermitsAuthorized() {
+        HttpResponse<String> response = Unirest.delete("http://localhost:7000/compositions/0")
                 .header("Authorization", "admin-auth-token")
                 .asString();
         assertAll(
                 () -> assertEquals( 400, response.getStatus()),
-                () -> assertEquals( "That is not a valid composition id.", response.getBody()));
+                () -> assertEquals( "0 is not a valid composition id.", response.getBody()));
     }
 }

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void getAllCallsServiceMethod() {
+     void getAllUsersCallsServiceMethod() {
         Context context = mock(Context.class);
 
         List<User> Users = new ArrayList<>();

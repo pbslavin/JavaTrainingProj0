@@ -1,5 +1,6 @@
 package dev.slavin.services;
 
+import dev.slavin.data.CompositionDAO;
 import dev.slavin.data.CompositionDAOImpl;
 import dev.slavin.models.Composition;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class CompositionService {
 
-    private CompositionDAOImpl compositionDAO = new CompositionDAOImpl();
+    private CompositionDAO compositionDAO = new CompositionDAOImpl();
 
     public List<Composition> getAllCompositions() {
         return compositionDAO.getAllCompositions();

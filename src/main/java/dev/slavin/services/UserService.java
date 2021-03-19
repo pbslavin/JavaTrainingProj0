@@ -1,5 +1,6 @@
 package dev.slavin.services;
 
+import dev.slavin.data.UserDAO;
 import dev.slavin.data.UserDAOImpl;
 import dev.slavin.models.User;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class UserService {
 
-    private UserDAOImpl userDAO = new UserDAOImpl();
+    private final UserDAO userDAO = new UserDAOImpl();
 
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();

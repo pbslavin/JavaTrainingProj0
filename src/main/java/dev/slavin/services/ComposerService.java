@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ComposerService {
 
-    private ComposerDAOImpl composerDAO = new ComposerDAOImpl();
+    private final ComposerDAO composerDAO = new ComposerDAOImpl();
 
     public List<Composer> getAllComposers() {
         return composerDAO.getAllComposers();

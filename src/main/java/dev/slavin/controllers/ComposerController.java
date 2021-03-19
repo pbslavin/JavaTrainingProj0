@@ -10,14 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ComposerController {
-
-
-    private Logger logger = LoggerFactory.getLogger(ComposerController.class);
-    private ErrorLogger errorLogger = new ErrorLogger(ComposerController.class, logger);
-    private ComposerService composerService = new ComposerService();
-
     private static final String INVALID_COMPOSER = "That is not a valid composer.";
     private static final String INVALID_COMPOSER_ID = " is not a valid composer id.";
+
+    private final Logger logger = LoggerFactory.getLogger(ComposerController.class);
+    private final ErrorLogger errorLogger = new ErrorLogger(ComposerController.class, logger);
+    private final ComposerService composerService = new ComposerService();
+
+    private Composer composer = new Composer();
 
     public void handleGetAllComposers (Context ctx) {
         ctx.json(composerService.getAllComposers());
@@ -31,12 +31,11 @@ public class ComposerController {
             ctx.json(composerService.getComposer(id));
         } catch (Exception e) {
             errorLogger.logError(e);
-            throw new BadRequestResponse("\"" + pathParamId + ComposerController.INVALID_COMPOSER_ID);
+            throw new BadRequestResponse(pathParamId + ComposerController.INVALID_COMPOSER_ID);
         }
     }
 
     public void handleAddNewComposer(Context ctx) {
-        Composer composer = new Composer();
         try {
             composer = ctx.bodyAsClass(Composer.class);
             composerService.addComposer(composer);
@@ -48,7 +47,6 @@ public class ComposerController {
     }
 
     public void handleUpdateComposer(Context ctx) {
-        Composer composer = new Composer();
         try {
             composer = ctx.bodyAsClass(Composer.class);
             composerService.updateComposer(composer);
@@ -68,7 +66,7 @@ public class ComposerController {
             ctx.status(204);
         } catch (Exception e) {
             errorLogger.logError(e);
-            throw new BadRequestResponse(ComposerController.INVALID_COMPOSER_ID);
+            throw new BadRequestResponse(pathParamId + ComposerController.INVALID_COMPOSER_ID);
         }
     }
 }

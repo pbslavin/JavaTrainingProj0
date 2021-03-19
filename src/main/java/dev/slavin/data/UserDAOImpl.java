@@ -2,6 +2,7 @@ package dev.slavin.data;
 
 import dev.slavin.models.User;
 import dev.slavin.util.ConnectionUtility;
+import dev.slavin.util.ErrorLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
     private Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
+    private ErrorLogger errorLogger = new ErrorLogger(UserDAOImpl.class, logger);
 
     @Override
     public List<User> getAllUsers() {
@@ -27,7 +29,7 @@ public class UserDAOImpl implements UserDAO {
                 users.add(new User(id, userName, password, authLevel));
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return users;
     }
@@ -45,7 +47,7 @@ public class UserDAOImpl implements UserDAO {
                 return new User(id, userName, password, authLevel);
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return null;
     }
@@ -63,7 +65,7 @@ public class UserDAOImpl implements UserDAO {
                 return new User(id, userName, password, authLevel);
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return null;
     }
@@ -78,7 +80,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setInt(3, user.getAuthLevel());
             preparedStatement.executeQuery();
         } catch (Exception e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return user;
     }
@@ -87,11 +89,11 @@ public class UserDAOImpl implements UserDAO {
     public User updateUser(User user) {
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "update table user_data set userName = ?, password = ?, authLevel = ?")) {
+                     "update user_data set userName = ?, password = ?, authLevel = ?")) {
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return user;
     }
@@ -99,11 +101,11 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void deleteUser(int id) {
         try (Connection connection = ConnectionUtility.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("delete from table user where id = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("delete from user where id = ?")) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
     }
 
@@ -114,10 +116,6 @@ public class UserDAOImpl implements UserDAO {
             user = getUserByUserName(userName);
         }
         return user;
-    }
-
-    private void logException(Exception e) {
-        logger.error("{} - {}", e.getClass(), e.getMessage());
     }
 
     private static class UserMapping {

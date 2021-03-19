@@ -2,16 +2,19 @@ package dev.slavin.data;
 
 import dev.slavin.models.Composer;
 import dev.slavin.util.ConnectionUtility;
+import dev.slavin.util.ErrorLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ComposerDAOImpl implements ComposerDAO {
 
     private Logger logger = LoggerFactory.getLogger(ComposerDAOImpl.class);
+    private ErrorLogger errorLogger = new ErrorLogger(ComposerDAOImpl.class, logger);
 
     @Override
     public List<Composer> getAllComposers() {
@@ -30,7 +33,7 @@ public class ComposerDAOImpl implements ComposerDAO {
                 composers.add(composer);
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return composers;
     }
@@ -49,7 +52,7 @@ public class ComposerDAOImpl implements ComposerDAO {
                 return new Composer(id, name, birthYear, deathYear);
             }
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return null;
     }
@@ -66,7 +69,7 @@ public class ComposerDAOImpl implements ComposerDAO {
             preparedStatement.setInt(3, composer.getDeathYear());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
         return null;
     }
@@ -75,7 +78,7 @@ public class ComposerDAOImpl implements ComposerDAO {
     public void updateComposer(Composer composer) {
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "update table composer set name = ?, birth_year = ?, death_year = ? where id = ?"
+                     "update composer set name = ?, birth_year = ?, death_year = ? where id = ?"
              )) {
             preparedStatement.setString(1, composer.getName());
             preparedStatement.setInt(2, composer.getBirthYear());
@@ -83,7 +86,7 @@ public class ComposerDAOImpl implements ComposerDAO {
             preparedStatement.setInt(4, composer.getId());
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
         }
     }
 
@@ -94,12 +97,9 @@ public class ComposerDAOImpl implements ComposerDAO {
             preparedStatement.setInt(1, id);
             preparedStatement.executeQuery();
         } catch (SQLException e) {
-            logException(e);
+            errorLogger.logError(e);
+            throw new NoSuchElementException();
         }
-    }
-
-    private void logException(Exception e) {
-        logger.error("{} - {}", e.getClass(), e.getMessage());
     }
 
     private static class ComposerMapping {
