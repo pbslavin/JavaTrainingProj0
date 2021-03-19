@@ -1,8 +1,8 @@
 Score Service
 
-This REST api provides access to two related database tables: Composers and 
-Compositions; Composers have a one-to-many relationship to Compositions.
-The resources are associated with `composers` and `composition` endpoints,
+This REST api provides access to two related resources, Composers and 
+Compositions. Composers may have multiple Compositions, which possess a foreign key.
+The two resources are associated with `composers` and `composition` endpoints,
 respectively.
 
 There is also a third table consisting of Users, with base endpoint `users`. Users 
@@ -16,8 +16,8 @@ HTTP method. Level-2 ("admin") authorization tokens permit access to all method 
 including those of Users.
 
 In addition to CRUDL operations, with standard RESTful routes, it is 
-also possible to GET all Compositions belonging to a Composer, or a single User by 
-username. Each of these methods interpolates an additional route segment 
+also possible to GET all Compositions belonging to a Composer, by id, or a single User by 
+username, which has must be unique in the database. Each of these methods interpolates an additional route segment 
 (`composer` or `username`) between the primary resource's path segment and 
 the composer id or case-sensitive username (`/compositions/composer/4` or 
 `/users/username/PSlavin`).

@@ -95,7 +95,7 @@ public class ComposerDAOImpl implements ComposerDAO {
         try (Connection connection = ConnectionUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("delete from composer where id = ?")) {
             preparedStatement.setInt(1, id);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             errorLogger.logError(e);
             throw new NoSuchElementException();
