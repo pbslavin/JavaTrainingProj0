@@ -23,19 +23,19 @@ import static org.mockito.Mockito.*;
 
     @BeforeEach
      void initMocks() {
-        MockitoAnnotations.initMocks(this);
+       MockitoAnnotations.initMocks(this);
     }
 
     @Test
-     void getAllUsersCallsServiceMethod() {
+     public void getAllUsersCallsServiceMethod() {
         Context context = mock(Context.class);
 
-        List<User> Users = new ArrayList<>();
-        Users.add(new User("user1","password", 1));
-        Users.add(new User("user2","password", 2));
+        List<User> users = new ArrayList<>();
+        users.add(new User("user1","password", 1));
+        users.add(new User("user2","password", 2));
 
-        when(service.getAllUsers()).thenReturn(Users);
+        when(service.getAllUsers()).thenReturn(users);
         UserController.handleGetAllUsers(context);
-        verify(context).json(Users);
+        verify(context).json(users);
     }
 }

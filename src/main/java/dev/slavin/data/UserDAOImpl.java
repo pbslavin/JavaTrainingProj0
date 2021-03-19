@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class UserDAOImpl implements UserDAO {
     private Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
@@ -106,6 +107,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.executeQuery();
         } catch (SQLException e) {
             errorLogger.logError(e);
+            throw new NoSuchElementException();
         }
     }
 

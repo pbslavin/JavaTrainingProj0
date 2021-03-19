@@ -4,7 +4,6 @@ import dev.slavin.models.Composition;
 import dev.slavin.models.Genre;
 import dev.slavin.util.ConnectionUtility;
 import dev.slavin.util.ErrorLogger;
-import io.javalin.http.BadRequestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

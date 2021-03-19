@@ -15,7 +15,8 @@ public class CompositionController {
 
     private final Logger logger = LoggerFactory.getLogger(CompositionController.class);
     private final ErrorLogger errorLogger = new ErrorLogger(CompositionController.class, logger);
-    private final CompositionService compositionService = new CompositionService();
+
+    private CompositionService compositionService = new CompositionService();
 
     private Composition composition;
 

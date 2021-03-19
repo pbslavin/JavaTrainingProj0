@@ -11,9 +11,8 @@ dev/slavin/models/Genre.java
 dev/slavin/data/ComposerDAOImpl.java
  dev.slavin.data.ComposerDAOImpl
  dev.slavin.data.ComposerDAOImpl$ComposerMapping
-dev/slavin/data/UserDAOImpl.java
- dev.slavin.data.UserDAOImpl
- dev.slavin.data.UserDAOImpl$UserMapping
+dev/slavin/services/UserService.java
+ dev.slavin.services.UserService
 dev/slavin/models/Composition.java
  dev.slavin.models.Composition
 dev/slavin/util/ConnectionUtility.java
@@ -22,22 +21,23 @@ dev/slavin/data/CompositionDAO.java
  dev.slavin.data.CompositionDAO
 dev/slavin/Driver.java
  dev.slavin.Driver
-dev/slavin/JavalinApp.java
- dev.slavin.JavalinApp
+dev/slavin/data/UserDAOImpl.java
+ dev.slavin.data.UserDAOImpl
+ dev.slavin.data.UserDAOImpl$UserMapping
+dev/slavin/services/CompositionService.java
+ dev.slavin.services.CompositionService
+dev/slavin/util/ErrorLogger.java
+ dev.slavin.util.ErrorLogger
 dev/slavin/data/CompositionDAOImpl.java
  dev.slavin.data.CompositionDAOImpl
  dev.slavin.data.CompositionDAOImpl$CompositionMapping
-dev/slavin/util/ErrorLogger.java
- dev.slavin.util.ErrorLogger
-dev/slavin/controllers/ComposerController.java
- dev.slavin.controllers.ComposerController
 dev/slavin/services/ComposerService.java
  dev.slavin.services.ComposerService
-dev/slavin/controllers/CompositionController.java
- dev.slavin.controllers.CompositionController
-dev/slavin/services/CompositionService.java
- dev.slavin.services.CompositionService
-dev/slavin/services/UserService.java
- dev.slavin.services.UserService
 dev/slavin/controllers/UserController.java
  dev.slavin.controllers.UserController
+dev/slavin/controllers/CompositionController.java
+ dev.slavin.controllers.CompositionController
+dev/slavin/controllers/ComposerController.java
+ dev.slavin.controllers.ComposerController
+dev/slavin/JavalinApp.java
+ dev.slavin.JavalinApp

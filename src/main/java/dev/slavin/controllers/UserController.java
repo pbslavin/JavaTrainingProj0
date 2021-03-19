@@ -20,7 +20,8 @@ public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final ErrorLogger errorLogger = new ErrorLogger(UserController.class, logger);
-    private final UserService userService = new UserService();
+
+    private UserService userService = new UserService();
 
     public void logIn(Context ctx){
         String userName = ctx.formParam("userName");  //(Content-Type: application/x-www-form-urlencoded)
