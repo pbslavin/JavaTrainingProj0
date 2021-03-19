@@ -38,7 +38,7 @@ public class CompositionController {
     public void handleGetCompositionsByComposer(Context ctx) {
         String pathParamComposerId = "";
         try {
-            pathParamComposerId = ctx.pathParam("composerId");
+            pathParamComposerId = ctx.pathParam("id");
             int id = Integer.parseInt(pathParamComposerId);
             ctx.json(compositionService.getCompositionsByComposer(id));
         } catch (Exception e) {

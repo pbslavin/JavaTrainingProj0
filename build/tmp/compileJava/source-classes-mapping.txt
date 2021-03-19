@@ -21,8 +21,8 @@ dev/slavin/data/CompositionDAO.java
 dev/slavin/data/CompositionDAOImpl.java
  dev.slavin.data.CompositionDAOImpl
  dev.slavin.data.CompositionDAOImpl$CompositionMapping
-dev/slavin/controllers/CompositionController.java
- dev.slavin.controllers.CompositionController
+dev/slavin/Driver.java
+ dev.slavin.Driver
 dev/slavin/data/ComposerDAOImpl.java
  dev.slavin.data.ComposerDAOImpl
  dev.slavin.data.ComposerDAOImpl$ComposerMapping
@@ -35,9 +35,9 @@ dev/slavin/data/UserDAOImpl.java
  dev.slavin.data.UserDAOImpl$UserMapping
 dev/slavin/data/UserDAO.java
  dev.slavin.data.UserDAO
+dev/slavin/controllers/CompositionController.java
+ dev.slavin.controllers.CompositionController
 dev/slavin/controllers/UserController.java
  dev.slavin.controllers.UserController
-dev/slavin/Driver.java
- dev.slavin.Driver
 dev/slavin/JavalinApp.java
  dev.slavin.JavalinApp

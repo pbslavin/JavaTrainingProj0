@@ -50,7 +50,7 @@ class CompositionControllerIntegrationTest {
 
     @Test
     void getByComposerPermitsAnyAndFetchesList() {
-        HttpResponse<List<Composition>> response = Unirest.get("http://localhost:7000/compositions/composer/1")
+        HttpResponse<List<Composition>> response = Unirest.get("http://localhost:7000/composers/1/compositions")
                 .asObject(new GenericType<List<Composition>>() {});
         assertAll(
                 () -> assertEquals(200, response.getStatus()),

@@ -16,20 +16,22 @@ public class JavalinApp {
     Javalin app = Javalin.create().routes(() -> {
         before(ctx -> {
             if (!ctx.path().equals("/login")) {
-                userController.isLoggedIn(ctx);
+                userController.isLoggedIn(ctx); // checks for any Authorization token
             }
         });
         before(ctx -> {
             if (!ctx.method().equals("GET") && !ctx.path().equals("/login")) {
-                userController.adminAuth(ctx);
+                userController.adminAuth(ctx); // checks for admin Authorization token
             }
         });
-        before("users", userController::adminAuth);
         path("login", () -> post(userController::logIn));
+        before("users", userController::adminAuth);
         path("users", () -> {
             get(userController::handleGetAllUsers);
             post(userController::handleAddUser);
+            before("username/:userName", userController::adminAuth);
             path("username/:userName", () -> get(userController::handleGetUserByUserName));
+            before(":id", userController::adminAuth);
             path(":id", () -> {
                 get(userController::handleGetUserById);
                 put(userController::handleUpdateUser);
@@ -43,6 +45,7 @@ public class JavalinApp {
                 get(composerController::handleGetComposerById);
                 put(composerController::handleUpdateComposer);
                 delete(composerController::handleDeleteComposer);
+                path("compositions", () -> get(compositionController::handleGetCompositionsByComposer));
             });
         });
         path("compositions", () -> {
@@ -53,7 +56,7 @@ public class JavalinApp {
                 put(compositionController::handleUpdateComposition);
                 delete(compositionController::handleDeleteComposition);
             });
-            path("composer/:composerId", () -> get(compositionController::handleGetCompositionsByComposer));
+//            path("composer/:composerId", () -> get(compositionController::handleGetCompositionsByComposer));
         });
     });
 

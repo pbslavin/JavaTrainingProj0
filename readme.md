@@ -17,9 +17,7 @@ including those of Users.
 
 In addition to CRUDL operations, with standard RESTful routes, it is 
 also possible to GET all Compositions belonging to a Composer by id, or to GET a single User by 
-username (which has a uniqueness constraint in the database). Each of these methods interpolates an additional route segment 
-(`composer` or `username`) between the primary resource's path segment and 
-the composer id or case-sensitive username (`/compositions/composer/4` or 
+username (which must be unique). The form of these routes is as follows: `/composer/4/compositions` and 
 `/users/username/PSlavin`).
 
 
